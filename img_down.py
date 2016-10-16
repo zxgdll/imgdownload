@@ -3,24 +3,28 @@
 import urllib2
 import requests
 import re
+import os
 class image:
 	def getPage(self,url):
 		request=urllib2.Request(url)
 		response=urllib2.urlopen(request)
 		page=response.read()
 		return page
-	def imgDown(self,str_word,page):
+	def imgDown(self,input,str_word,page):
 		pattern=u'\"objURL\":\"(.*?)\"'
 		items=re.findall(pattern,page,re.S)
 		x=0
 		print(len(items))
+		newpath=os.path.join('pics/',input) #为表情包创建独立的文件夹
+		# print(newpath)
+		os.mkdir(newpath)
 		for item in items:
 			try:
-				pic=requests.get(item,timeout=30)
+				pic=requests.get(item,timeout=50)
 			except requests.exceptions.ConnectionError:
 				print('[错误]：下载失败')
 				continue
-			picstr='pics/'+str_word+str(x)+'.jpg'
+			picstr=newpath+'/'+str_word[:len(input)]+str(x)+'.jpg'
 			print('.......第%d张......'%x)
 			#pic.content
 			with open(picstr,'wb') as f:
@@ -41,6 +45,6 @@ while flag:
 	url='http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=%s&pn=%d&gsm=%d'%(str(input),a,b)
 	# url='http://image.baidu.com/search/index?tn=baiduimage&ps=1&ct=201326592&lm=-1&cl=2&nc=1&ie=utf-8&word='+str(input)
 	page=img.getPage(url)
-	img.imgDown(str(input+'表情包'+str(b/10)),page)
+	img.imgDown(str(input),str(input+'表情'+str(b/10)),page)
 	print('下载完成！')
 	a,b=b,b+10

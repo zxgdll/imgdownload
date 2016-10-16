@@ -18,7 +18,7 @@ try:
 	print(len(items))
 	for item in items:
 		try:
-			pic=requests.get(item,timeout=30)
+			pic=requests.get(item,timeout=50)
 		except requests.exceptions.ConnectionError:
 			print('[ERROR] image is not downloaded!')
 			continue

@@ -17,10 +17,11 @@ class image:
 		print(len(items))
 		newpath=os.path.join('pics/',input) #为表情包创建独立的文件夹
 		# print(newpath)
-		os.mkdir(newpath)
+		if not os.path.exists(newpath):
+			os.mkdir(newpath)
 		for item in items:
 			try:
-				pic=requests.get(item,timeout=50)
+				pic=requests.get(item,timeout=100)
 			except requests.exceptions.ConnectionError:
 				print('[错误]：下载失败')
 				continue
